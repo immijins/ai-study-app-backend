@@ -55,4 +55,13 @@ public class TaskController {
         return ResponseEntity.noContent().build();
     }
 
+    // 완료 여부 체크/해제
+    // PATCH /api/task/1/toggle
+    @PatchMapping("/{taskId}/toggle")
+    public ResponseEntity<TaskResponse> toggleComplete(
+            @CurrentUser Long userId,
+            @PathVariable("taskId") Long taskId) {
+        return ResponseEntity.ok(taskService.toggleComplete(userId, taskId));
+    }
+
 }
