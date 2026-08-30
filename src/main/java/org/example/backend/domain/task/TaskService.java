@@ -1,6 +1,8 @@
 package org.example.backend.domain.task;
 
 import lombok.RequiredArgsConstructor;
+import org.example.backend.domain.users.UserRepository;
+import org.example.backend.domain.users.Users;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 public class TaskService {
 
     private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
 
     // 할 일 생성
     @Transactional
@@ -52,10 +55,23 @@ public class TaskService {
     // 할 일 완료 상태 토글
     @Transactional
     public TaskResponse toggleComplete(Long userId, Long taskId) {
+        // 할 일 정보
         Task task = taskRepository.findByIdAndUserId(taskId, userId)
                 .orElseThrow(() -> new IllegalArgumentException("할 일을 찾을 수 없거나 권한이 없습니다."));
 
+        // 유저 정보
+        Users user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+
+        // 현재 상태 확인
+        boolean wasComplete = task.getIsComplete();
         task.toggleComplete();
+
+        if (!wasComplete && task.getIsComplete()) {
+            user.addExp(20); // 할 일 완료 시 +20
+        } else if (wasComplete && !task.getIsComplete()) {
+            user.addExp(-20);
+        }
 
         return new TaskResponse(task);
     }

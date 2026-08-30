@@ -1,6 +1,8 @@
 package org.example.backend.domain.task;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,4 +14,15 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     // 단건 조회용
     Optional<Task> findByIdAndUserId(Long id, Long userId);
+
+    // 당일 완료한 할 일 개수
+    @Query("SELECT new org.example.backend.domain.task.TaskStatResponse(" +
+            "t.planDate, " +
+            "COUNT(t), " +
+            "SUM(CASE WHEN t.isComplete = true THEN 1L ELSE 0L END)) " +
+            "FROM Task t " +
+            "WHERE t.userId = :userId AND t.planDate >= :startDate " +
+            "GROUP BY t.planDate " +
+            "ORDER BY t.planDate ASC")
+    List<TaskStatResponse> getDailyTaskStats(@Param("userId") Long userId, @Param("startDate") LocalDate startDate);
 }
