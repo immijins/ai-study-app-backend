@@ -104,6 +104,8 @@ public class Users {
                 this.streakDays = 1;
             }
         }
+
+        this.lastStudyDate = today;
     }
 
     // 결석 상태 확인 로직

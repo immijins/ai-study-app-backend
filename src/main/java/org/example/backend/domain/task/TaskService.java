@@ -83,5 +83,18 @@ public class TaskService {
                 .orElseThrow(() -> new IllegalArgumentException("할 일을 찾을 수 없거나 권한이 없습니다."));
         taskRepository.delete(task);
     }
+
+    // AI 할 일 추가
+    @Transactional
+    public void addAiRecommendedTask(Long userId, String title) {
+        Task task = Task.builder()
+                .userId(userId)
+                .title(title)
+                .planDate(LocalDate.now())
+                .categoryId(2L)
+                .build();
+
+        taskRepository.save(task);
+    }
 }
 

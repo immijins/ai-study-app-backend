@@ -26,7 +26,7 @@ public class StudyTimeService {
                 request.getStudyDate()
         );
 
-        StudyTime saved = studyTimeRepository.save(studyTime);
+        StudyTime saved = studyTimeRepository.saveAndFlush(studyTime);
 
         // 일일 공부 시간 달성 시 적용
         Users users = userRepository.findById(userId)
@@ -36,7 +36,7 @@ public class StudyTimeService {
         Integer todayTotalSeconds = studyTimeRepository.getTotalStudySecondsByDate(userId, today);
 
         // 누적 시간이 1시간 이상이면
-        if (todayTotalSeconds >= 3600) {
+        if (todayTotalSeconds >= 60 && !today.equals(users.getLastStudyDate())) {
             // 연속 출석 인정
             users.recordDailyStudy(today);
 

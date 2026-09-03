@@ -13,3 +13,7 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+openai:
+  api-key: ${OPENAI_API_KEY}
+  model: gpt-4o-mini

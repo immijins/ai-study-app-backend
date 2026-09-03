@@ -21,7 +21,7 @@ public class UserController {
         Users user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
 
-        return new UserProfileResponse(user.getNickname(), user.getLevel(), user.getStreakDays(), user.getExp());
+        return new UserProfileResponse(user.getNickname(), user.getLevel(), user.getStreakDays(), user.getExp(), user.getLastStudyDate());
     }
 
 }
