@@ -1,1 +1,6 @@
+## 📱AI 스터디 플래너(백엔드)
+
 AI 기반 학습 계획 추천과 게이미피케이션을 결합한 스터디 플래너 앱 백엔드 구현 코드입니다. (Spring Boot)
+
+- Spring Boot
+- SQL (Supabase, PostgreSQL)
